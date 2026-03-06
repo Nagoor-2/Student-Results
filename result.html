@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEC College - Subject Results</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color:skyblue;
+    }
+
+    #header {
+      background-color:darkviolet;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    h2 {
+      color: #007BFF;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      width: 60%;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border: 2px solid #007BFF;
+      background-color: #87CEEB;
+    }
+
+    th, td {
+      border: 2px solid #007BFF;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+      background-color: #87CEEB;
+    }
+
+    th {
+      background-color: #007BFF;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #e6e6e6;
+    }
+
+    tr:hover {
+      background-color: #d4d4d4;
+    }
+
+    #logo {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="header">
+    <h1>NARASARAOPETA ENGINEERING COLLEGE (Autonomous)</h1>
+    <p style="color:white;">Kotappakonda Rd, Narasaraopeta, Andhra Pradesh 522601
+</p>
+  </div>
+  
+
+  <div class="container">
+    <img src="nec.png" alt="NEC College Logo" id="logo">
+    <h2>NEC College - IT Results(2-1) Semister</h2>
+    <form id="resultForm">
+      <label for="rollNumber">Enter HT Number :</label>
+      <input type="text" id="rollNumber" placeholder="e.g., 22471A1201">
+      <button type="button" onclick="displayResults()">View Results</button>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function generateGrade() {
+      const grades = ['A+', 'A', 'B', 'C', 'D', 'F'];
+      const points = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+      return points[Math.floor(Math.random() * points.length)];
+    }
+
+    function displayResults() {
+      const rollNumber = document.getElementById('rollNumber').value;
+      
+      if (!rollNumber || !/^\d{10}$/.test(rollNumber)) {
+        alert('Please enter a valid HT number (10 digits)');
+        return;
+      }
+
+      const subjects = [
+        { name: 'COI', type: 'Core' },
+        { name: 'JAVA', type: 'Core' },
+        { name: 'DATA STRUCTURES', type: 'Core' },
+        { name: 'FEWT', type: 'Core' },
+        { name: 'CO', type: 'Core' },
+        { name: 'MFCS', type: 'Core' },
+        { name: 'DS-LAB', type: 'Lab' },
+        { name: 'DATA STRUCTURE-LAB', type: 'Lab' },
+        { name: 'JAVA-LAB', type: 'Lab' },
+        { name: 'FEWT-LAB', type: 'Lab' }
+      ];
+
+      let tableHTML = `<h3>Results for HT: ${rollNumber}</h3>`;
+      tableHTML += `<table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Subject</th>
+            <th>Type</th>
+            <th>Points</th>
+            <th>Grade</th>
+            <th>Credits</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+      subjects.forEach((subject, index) => {
+        const points = generateGrade();
+        const credits = subject.type === 'Lab' ? 2 : 3;
+        tableHTML += `<tr>
+          <td>${index + 1}</td>
+          <td>${subject.name}</td>
+          <td>${subject.type}</td>
+          <td>${points}</td>
+          <td>${points >= 5 ? ['F', 'E', 'D', 'D', 'C', 'B', 'B', 'A', 'A', 'A+'][Math.max(0, points)] : 'F'}</td>
+          <td>${credits}</td>
+        </tr>`;
+      });
+
+      tableHTML += `</tbody></table>`;
+      document.getElementById('result').innerHTML = tableHTML;
+    }
+  </script>
+
+</body>
+</html>
