@@ -7,70 +7,138 @@
 
 <style>
 
-body{
-font-family:Arial;
+*{
 margin:0;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+background:linear-gradient(-45deg,#6a11cb,#2575fc,#00c6ff,#7f00ff);
+background-size:400% 400%;
+animation:bgAnimation 12s infinite ease;
+display:flex;
+flex-direction:column;
+align-items:center;
+color:white;
+}
+
+@keyframes bgAnimation{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 header{
-background:darkviolet;
-color:white;
+width:100%;
 text-align:center;
-padding:15px;
+padding:20px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(6px);
+}
+
+header h1{
+font-size:26px;
 }
 
 .container{
-width:80%;
+
+margin-top:40px;
+width:90%;
 max-width:700px;
-margin:40px auto;
-background:white;
-padding:25px;
-border-radius:10px;
-box-shadow:0 0 20px rgba(0,0,0,0.3);
+padding:35px;
+
+background:rgba(255,255,255,0.15);
+border-radius:15px;
+backdrop-filter:blur(15px);
+box-shadow:0 8px 40px rgba(0,0,0,0.4);
+
 text-align:center;
+animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 h2{
-color:#007BFF;
+margin-bottom:20px;
 }
 
 input{
-padding:10px;
 width:70%;
-border-radius:5px;
-border:1px solid #ccc;
-}
-
-button{
-padding:10px 20px;
-background:#007BFF;
-color:white;
+padding:12px;
 border:none;
-border-radius:5px;
-cursor:pointer;
+border-radius:6px;
+outline:none;
+font-size:16px;
 margin-top:10px;
 }
 
+button{
+
+margin-top:15px;
+padding:12px 25px;
+
+border:none;
+border-radius:30px;
+
+background:linear-gradient(45deg,#00f2fe,#4facfe);
+
+color:white;
+font-size:16px;
+cursor:pointer;
+
+transition:0.3s;
+box-shadow:0 0 15px rgba(0,0,0,0.4);
+
+}
+
 button:hover{
-background:#0056b3;
+
+transform:scale(1.08);
+box-shadow:0 0 25px #00f2fe;
+
 }
 
 table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
 
-th,td{
-border:1px solid #ccc;
-padding:8px;
-text-align:center;
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+
+background:white;
+color:black;
+
+border-radius:10px;
+overflow:hidden;
+
+animation:fadeIn 1s ease;
+
 }
 
 th{
-background:#007BFF;
+background:#2575fc;
 color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+background:#f2f2f2;
 }
 
 .pass{
@@ -80,6 +148,16 @@ font-weight:bold;
 
 .fail{
 color:red;
+font-weight:bold;
+}
+
+.sgpaBox{
+
+margin-top:20px;
+padding:15px;
+background:white;
+color:black;
+border-radius:10px;
 font-weight:bold;
 }
 
@@ -95,11 +173,11 @@ font-weight:bold;
 
 <div class="container">
 
-<h2>IT Results (2-1 Semester)</h2>
+<h2>IT Department Results (2-1 Semester)</h2>
 
 <input type="text" id="rollNumber" placeholder="Enter Hall Ticket Number">
 
-<br><br>
+<br>
 
 <button onclick="displayResults()">View Results</button>
 
@@ -111,14 +189,14 @@ font-weight:bold;
 
 function isValidHallTicket(ht){
 
-ht = ht.toUpperCase().trim();
+ht=ht.toUpperCase().trim();
 
-const match = ht.match(/^(\d{5}A12)(\d{2})$/);
+const match=ht.match(/^(\d{5}A12)(\d{2})$/);
 
 if(!match) return false;
 
-const prefix = match[1];
-const number = parseInt(match[2]);
+const prefix=match[1];
+const number=parseInt(match[2]);
 
 if(prefix==="22471A12"){
 return number>=1 && number<=66;
@@ -138,9 +216,7 @@ return Math.floor(Math.random()*6)+5;
 
 function displayResults(){
 
-let ht = document.getElementById("rollNumber").value;
-
-ht = ht.toUpperCase();
+let ht=document.getElementById("rollNumber").value.toUpperCase();
 
 if(!isValidHallTicket(ht)){
 
@@ -200,11 +276,13 @@ html+=`</table>`;
 
 let sgpa=(totalPoints/totalCredits).toFixed(2);
 
-let status= sgpa>=5 ? "PASS" : "FAIL";
+let status=sgpa>=5?"PASS":"FAIL";
 
 html+=`
-<h3>SGPA : ${sgpa}</h3>
-<h3 class="${status==="PASS"?"pass":"fail"}">${status}</h3>
+<div class="sgpaBox">
+SGPA : ${sgpa} <br>
+Status : <span class="${status==="PASS"?"pass":"fail"}">${status}</span>
+</div>
 `;
 
 document.getElementById("result").innerHTML=html;
