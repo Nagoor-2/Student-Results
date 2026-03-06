@@ -3,123 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>NEC Results Portal</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
-}
-
 body{
+font-family:Arial;
+margin:0;
 background:linear-gradient(135deg,#4facfe,#00f2fe);
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-animation:fadeIn 1s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
 }
 
 header{
-background:#6a0dad;
+background:darkviolet;
 color:white;
-width:100%;
 text-align:center;
 padding:15px;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
-
-header h1{
-font-size:24px;
 }
 
 .container{
-background:white;
-margin-top:40px;
-padding:30px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-width:90%;
+width:80%;
 max-width:700px;
+margin:40px auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
 text-align:center;
-animation:slideUp 1s ease;
-}
-
-@keyframes slideUp{
-from{
-transform:translateY(50px);
-opacity:0;
-}
-to{
-transform:translateY(0);
-opacity:1;
-}
-}
-
-#logo{
-width:120px;
-margin-bottom:15px;
 }
 
 h2{
 color:#007BFF;
-margin-bottom:20px;
 }
 
 input{
-padding:12px;
+padding:10px;
 width:70%;
-border-radius:6px;
+border-radius:5px;
 border:1px solid #ccc;
-margin-bottom:15px;
-font-size:16px;
 }
 
 button{
-padding:12px 20px;
-border:none;
+padding:10px 20px;
 background:#007BFF;
 color:white;
-font-size:16px;
-border-radius:6px;
+border:none;
+border-radius:5px;
 cursor:pointer;
-transition:0.3s;
+margin-top:10px;
 }
 
 button:hover{
 background:#0056b3;
-transform:scale(1.05);
 }
 
 table{
 width:100%;
 border-collapse:collapse;
 margin-top:20px;
-animation:fadeIn 1s ease;
 }
 
 th,td{
-border:1px solid #ddd;
-padding:10px;
+border:1px solid #ccc;
+padding:8px;
 text-align:center;
 }
 
 th{
 background:#007BFF;
 color:white;
-}
-
-tr:nth-child(even){
-background:#f2f2f2;
 }
 
 .pass{
@@ -132,35 +83,23 @@ color:red;
 font-weight:bold;
 }
 
-.sgpa{
-margin-top:20px;
-font-size:18px;
-font-weight:bold;
-color:#333;
-}
-
 </style>
-
 </head>
 
 <body>
 
 <header>
 <h1>NARASARAOPETA ENGINEERING COLLEGE (Autonomous)</h1>
-<p>Kotappakonda Rd, Narasaraopeta, Andhra Pradesh</p>
+<p>Kotappakonda Rd, Narasaraopeta</p>
 </header>
 
 <div class="container">
 
-<img src="nec.png" id="logo">
+<h2>IT Results (2-1 Semester)</h2>
 
-<h2>IT Department Results (2-1 Semester)</h2>
+<input type="text" id="rollNumber" placeholder="Enter Hall Ticket Number">
 
-<label>Enter HT Number</label><br>
-
-<input type="text" id="rollNumber" placeholder="Example: 22471A1201">
-
-<br>
+<br><br>
 
 <button onclick="displayResults()">View Results</button>
 
@@ -172,25 +111,25 @@ color:#333;
 
 function isValidHallTicket(ht){
 
-ht = ht.toUpperCase();
+ht = ht.toUpperCase().trim();
 
-const pattern = /^(22471A12\d{2}|23475A12\d{2})$/;
+const match = ht.match(/^(\d{5}A12)(\d{2})$/);
 
-if(!pattern.test(ht)){
-return false;
-}
+if(!match) return false;
 
-const number = parseInt(ht.slice(-2));
+const prefix = match[1];
+const number = parseInt(match[2]);
 
-if(ht.startsWith("22471A12")){
+if(prefix==="22471A12"){
 return number>=1 && number<=66;
 }
 
-if(ht.startsWith("23475A12")){
+if(prefix==="23475A12"){
 return number>=1 && number<=6;
 }
 
 return false;
+
 }
 
 function generatePoint(){
@@ -199,7 +138,9 @@ return Math.floor(Math.random()*6)+5;
 
 function displayResults(){
 
-let ht = document.getElementById("rollNumber").value.toUpperCase();
+let ht = document.getElementById("rollNumber").value;
+
+ht = ht.toUpperCase();
 
 if(!isValidHallTicket(ht)){
 
@@ -262,10 +203,8 @@ let sgpa=(totalPoints/totalCredits).toFixed(2);
 let status= sgpa>=5 ? "PASS" : "FAIL";
 
 html+=`
-<div class="sgpa">
-SGPA : ${sgpa} <br>
-Status : <span class="${status==="PASS"?"pass":"fail"}">${status}</span>
-</div>
+<h3>SGPA : ${sgpa}</h3>
+<h3 class="${status==="PASS"?"pass":"fail"}">${status}</h3>
 `;
 
 document.getElementById("result").innerHTML=html;
